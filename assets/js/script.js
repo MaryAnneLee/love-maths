@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
     for (let button of buttons) {
         button.addEventListener("click", function() {
             if (this.getAttribute("data-type") === "submit") {
-                alert("You clicked submit!");
+                checkanswer();
             } else {
                 let gameType = this.getAttribute("data-type");
                 runGame(gameType);
@@ -35,12 +35,39 @@ function runGame(gameType) {
 
 }
 
+/** Checks the answer against the first element in
+ * the returned calculateCorrectAnswer array
+  */
 function checkanswer() {
 
+    let userAnswer = parseInt(document.getElementById("answer-box").value);
+    let calculatedAnswer = calculatedCorrectAnswer();
+    let isCorrect = userAnswer === calculatedAnswer[0];
+
+    if (isCorrect) {
+        alert("Hey! You got it right! :D");
+    } else {
+        alert(`Awww.... you answered ${userAnswer}. The correct answer was ${calculatedAnswer[0]}!`);
+    }
+
+    runGame(calculatedAnswer[1]);
 
 }
 
-function calculateCorrectAnswer() {
+/** Gets the operands and the operator directly
+ * from the dom, and returns the correct answer.
+*/
+function calculatedCorrectAnswer() {
+    let operand1 = parseInt(document.getElementById('operand1').innerText);
+    let operand2 = parseInt(document.getElementById('operand2').innerText);
+    let operator = document.getElementById('operator').innerText;
+
+    if (operator === "+") {
+        return [operand1 + operand2, "addition"];
+    } else {
+        alert(`Unimplemented operator ${operator}`);
+        throw `Unimplemented operator ${operator}. Aborting!`;
+    }
 
 }
 
